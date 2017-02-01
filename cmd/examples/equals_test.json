@@ -1,0 +1,7 @@
+[{
+  "path": "../cmd/errors.go",
+  "equals_path": "../cmd/errors.go"
+}, {
+  "path": "../cmd/root.go",
+  "equals_path": "../cmd/root_test.go"
+}]

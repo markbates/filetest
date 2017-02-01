@@ -1,13 +1,12 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
-
-	yaml "gopkg.in/yaml.v1"
 
 	"github.com/fatih/color"
 	"github.com/pkg/errors"
@@ -82,7 +81,7 @@ func RunFile(path string) error {
 		return err
 	}
 	ff := Files{}
-	err = yaml.Unmarshal(b, &ff)
+	err = json.Unmarshal(b, &ff)
 	if err != nil {
 		return err
 	}

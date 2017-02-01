@@ -11,8 +11,9 @@ import (
 )
 
 type File struct {
-	Path     string
-	Contains []string
+	Path       string   `json:"path"`
+	Contains   []string `json:"contains"`
+	EqualsPath string   `json:"equals_path"`
 }
 
 func (f File) Test() error {
@@ -22,7 +23,7 @@ func (f File) Test() error {
 	}
 	b, err := ioutil.ReadFile(f.Path)
 	if err != nil {
-		return err
+		return errors.Errorf("%s: %s", f.Path, err.Error())
 	}
 	for _, s := range f.Contains {
 		if !bytes.Contains(b, []byte(s)) {
@@ -30,6 +31,19 @@ func (f File) Test() error {
 			if err != nil {
 				return err
 			}
+		}
+	}
+	if f.EqualsPath != "" {
+		_, err = os.Stat(f.EqualsPath)
+		if err != nil {
+			return Add(errors.Errorf("%s: %s does not exist", f.Path, f.EqualsPath))
+		}
+		bb, err := ioutil.ReadFile(f.EqualsPath)
+		if err != nil {
+			return errors.Errorf("%s: %s", f.Path, err.Error())
+		}
+		if string(bb) != string(b) {
+			return Add(errors.Errorf("%s: expected to equal %s", f.Path, f.EqualsPath))
 		}
 	}
 	return nil
