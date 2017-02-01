@@ -1,0 +1,9 @@
+[{
+  "path": "cmd/file.go",
+  "contains": [
+    "type File struct"
+  ]
+}, {
+  "path": "cmd/root.go",
+  "contains": ["pwd, _ = os.Getwd()"]
+}]
