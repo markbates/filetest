@@ -72,3 +72,19 @@ func Test_Run_with_Errors(t *testing.T) {
 	r.Len(errs, 2)
 }
 ```
+
+## Match the Whole Darn Thing!
+
+OK, so by now you're saying, what if I want to make the entire file against a known file? What am I supposed to do copy and paste the whole darn thing into a JSON file? C'mon? First, let's take the tone down a bit, there's really no need for that type of langage. I'm trying to help, remember? All we need to do in that case is use the `equals_path` attribute in our JSON file to point at another file. Did I confuse you? Yeah, that's what I thought.
+
+Here's an example:
+
+```json
+[{
+  "path": "../cmd/errors.go",
+  "equals_path": "../cmd/errors.go"
+}, {
+  "path": "../cmd/root.go",
+  "equals_path": "../cmd/root_test.go"
+}]
+```
