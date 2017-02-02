@@ -3,6 +3,9 @@
   "contains": [
     "type File struct",
     "i dont exist"
+  ],
+  "!contains": [
+    "File"
   ]
 }, {
   "path": "../cmd/root.go",

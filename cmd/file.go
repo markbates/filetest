@@ -11,9 +11,10 @@ import (
 )
 
 type File struct {
-	Path       string   `json:"path"`
-	Contains   []string `json:"contains"`
-	EqualsPath string   `json:"equals_path"`
+	Path        string   `json:"path"`
+	Contains    []string `json:"contains"`
+	NotContains []string `json:"!contains"`
+	EqualsPath  string   `json:"equals_path"`
 }
 
 func (f File) Test() error {
@@ -28,6 +29,14 @@ func (f File) Test() error {
 	for _, s := range f.Contains {
 		if !bytes.Contains(b, []byte(s)) {
 			err = Add(errors.Errorf("%s: does not contain '%s'", f.Path, s))
+			if err != nil {
+				return err
+			}
+		}
+	}
+	for _, s := range f.NotContains {
+		if bytes.Contains(b, []byte(s)) {
+			err = Add(errors.Errorf("%s: should not contain '%s'", f.Path, s))
 			if err != nil {
 				return err
 			}
