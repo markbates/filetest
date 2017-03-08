@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"log"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -17,13 +18,17 @@ func Test_Run_with_Errors(t *testing.T) {
 	r := require.New(t)
 	err := Run("./examples")
 	r.NoError(err)
-	r.Len(errs, 4)
+	r.Len(errs, 5)
+
 	msgs := make([]string, len(errs))
 	for _, e := range errs {
 		msgs = append(msgs, e.Error())
 	}
+
+	log.Println(msgs)
 	r.Contains(msgs, "../cmd/root.go: expected to equal ../cmd/root_test.go")
 	r.Contains(msgs, "i/dont/exist.go: does not exist")
 	r.Contains(msgs, "../cmd/file.go: does not contain 'i dont exist'")
 	r.Contains(msgs, "../cmd/file.go: should not contain 'File'")
+	r.Contains(msgs, "../cmd/root_test.go: should not be present")
 }

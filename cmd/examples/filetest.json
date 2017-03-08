@@ -12,4 +12,7 @@
   "contains": ["pwd, _ = os.Getwd()"]
 }, {
   "path": "i/dont/exist.go"
+}, {
+  "path": "../cmd/root_test.go",
+  "absent": true
 }]
