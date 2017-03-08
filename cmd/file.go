@@ -65,8 +65,10 @@ func (f File) Test() error {
 	return nil
 }
 
+//Files represents a slice of File
 type Files []File
 
+//Test calls Test for each of the Files in the File slice.
 func (ff Files) Test() error {
 	var g errgroup.Group
 	for _, f := range ff {
