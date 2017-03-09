@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"io/ioutil"
 	"os"
+	"path/filepath"
+	"strings"
 
 	"github.com/pkg/errors"
 
@@ -20,7 +22,14 @@ type File struct {
 }
 
 func (f File) Test() error {
-	_, err := os.Stat(f.Path)
+
+	err := f.resolvePath()
+
+	if err != nil {
+		Add(errors.Errorf("%s: invalid path", f.Path))
+	}
+
+	_, err = os.Stat(f.Path)
 	if err != nil && f.Absent == false {
 		return Add(errors.Errorf("%s: does not exist", f.Path))
 	}
@@ -62,6 +71,21 @@ func (f File) Test() error {
 			return Add(errors.Errorf("%s: expected to equal %s", f.Path, f.EqualsPath))
 		}
 	}
+	return nil
+}
+
+func (f *File) resolvePath() error {
+	if strings.Contains(f.Path, "*") {
+		files, err := filepath.Glob(f.Path)
+		if err != nil {
+			return err
+		}
+
+		if len(files) > 0 {
+			f.Path = files[0]
+		}
+	}
+
 	return nil
 }
 

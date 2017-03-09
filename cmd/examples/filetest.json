@@ -15,4 +15,9 @@
 }, {
   "path": "../cmd/root_test.go",
   "absent": true
+},{
+  "path": "../cmd/error*.go",
+  "contains": [
+    "package cmd---"
+  ]
 }]
