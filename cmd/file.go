@@ -35,7 +35,11 @@ func (f File) Test() error {
 	}
 
 	if f.Absent {
-		return Add(errors.Errorf("%s: should not be present", f.Path))
+		if err == nil {
+			return Add(errors.Errorf("%s: should not be present", f.Path))
+		}
+
+		return nil
 	}
 
 	b, err := ioutil.ReadFile(f.Path)

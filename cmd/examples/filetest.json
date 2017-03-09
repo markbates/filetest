@@ -20,4 +20,8 @@
   "contains": [
     "package cmd---"
   ]
+},
+{
+  "path": "../cmd/root_nod.go",
+  "absent": true
 }]
