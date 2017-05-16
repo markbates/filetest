@@ -50,7 +50,7 @@ func (f File) Test() error {
 	for _, s := range f.Contains {
 		if f.Count != 0 {
 			if bytes.Count(b, []byte(s)) != f.Count {
-				err = Add(errors.Errorf("%s: does not contain '%s' '%v' times.", f.Path, s, f.Count))
+				err = Add(errors.Errorf("%s: does not contain '%s' %v times.", f.Path, s, f.Count))
 				if err != nil {
 					return err
 				}
