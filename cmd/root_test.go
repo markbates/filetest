@@ -17,7 +17,7 @@ func Test_Run_with_Errors(t *testing.T) {
 	r := require.New(t)
 	err := Run("./examples")
 	r.NoError(err)
-	r.Len(errs, 6)
+	r.Len(errs, 7)
 
 	msgs := make([]string, len(errs))
 	for _, e := range errs {
@@ -30,4 +30,5 @@ func Test_Run_with_Errors(t *testing.T) {
 	r.Contains(msgs, "../cmd/file.go: should not contain 'File'")
 	r.Contains(msgs, "../cmd/root_test.go: should not be present")
 	r.Contains(msgs, "../cmd/errors.go: does not contain 'package cmd---'")
+	r.Contains(msgs, "../cmd/file.go: does not contain 'if err != nil {' 1 times.")
 }

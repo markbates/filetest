@@ -19,10 +19,10 @@ type File struct {
 	NotContains []string `json:"!contains"`
 	EqualsPath  string   `json:"equals_path"`
 	Absent      bool     `json:"absent"`
+	Count       int      `json:"count"`
 }
 
 func (f File) Test() error {
-
 	err := f.resolvePath()
 
 	if err != nil {
@@ -46,7 +46,19 @@ func (f File) Test() error {
 	if err != nil {
 		return errors.Errorf("%s: %s", f.Path, err.Error())
 	}
+
 	for _, s := range f.Contains {
+		if f.Count != 0 {
+			if bytes.Count(b, []byte(s)) != f.Count {
+				err = Add(errors.Errorf("%s: does not contain '%s' '%v' times.", f.Path, s, f.Count))
+				if err != nil {
+					return err
+				}
+			}
+
+			continue
+		}
+
 		if !bytes.Contains(b, []byte(s)) {
 			err = Add(errors.Errorf("%s: does not contain '%s'", f.Path, s))
 			if err != nil {
@@ -54,6 +66,7 @@ func (f File) Test() error {
 			}
 		}
 	}
+
 	for _, s := range f.NotContains {
 		if bytes.Contains(b, []byte(s)) {
 			err = Add(errors.Errorf("%s: should not contain '%s'", f.Path, s))
@@ -62,6 +75,7 @@ func (f File) Test() error {
 			}
 		}
 	}
+
 	if f.EqualsPath != "" {
 		_, err = os.Stat(f.EqualsPath)
 		if err != nil {
